@@ -1,0 +1,17 @@
+version: '3'
+services:
+  openvas:
+      restart: always
+      build:
+        context: ./openvas.1
+        dockerfile: Dockerfile
+      hostname: openvas
+      ports:
+        - "5443:443"
+      volumes:
+        - "./openvas.1/start.sh:/start.sh"
+        - "./openvas.1/init.sh:/init.sh"
+        - "./openvas.1/greenbone-nvt-sync:/usr/local/bin/greenbone-nvt-sync"
+        - "./openvas.1/devopenvas.pem:/devopenvas.pem"
+        - "./openvas.1/gvmd.sql:/gvmd.sql"
+        - "./openvas.1/data:/usr/local/var/lib"
