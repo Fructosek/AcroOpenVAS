@@ -30,10 +30,10 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt-get -y update 
 RUN apt-get -y install yarn
+
 ### Extra packages:
 RUN apt-get -y install sudo
 RUN apt-get -y install nano mc
-
 RUN apt-get -y install xmltoman
 RUN apt-get -y install texlive-latex-extra --no-install-recommends
 RUN apt-get -y install texlive-fonts-recommended
@@ -82,15 +82,9 @@ RUN make install
 
 WORKDIR /
 
-
 EXPOSE 443
 
 COPY ./start.sh /start.sh
 COPY ./init.sh /init.sh
-#RUN ls /usr/local/bin/greenbone-nvt-syn
-#COPY ./greenbone-nvt-syn /greenbone-nvt-syn
-
-#Final preparation
-#RUN [ "/init.sh"]
 
 CMD [ "/start.sh"]
