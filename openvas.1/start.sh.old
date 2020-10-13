@@ -1,0 +1,34 @@
+#!/bin/sh
+sleep 5
+export LD_LIBRARY_PATH=/usr/local/lib
+
+/usr/bin/redis-server /etc/redis/redis-openvas.conf
+
+echo Strating OSPD Scanner 
+
+mkdir -p /var/run/ospd
+chmod 777 /var/run/ospd
+
+mkdir -p /usr/local/var/run/
+mkdir -p /usr/local/var/run/
+chmod 777 /usr/local/var/run/
+chmod 777 /usr/local/var/run/gvmd.sock
+
+ospd-openvas -u /var/run/ospd/ospd.sock
+
+echo Create Admin user
+gvmd --create-user=admin --password=hello --role="Super Admin"  --database=gvmd --db-host=db
+echo Set up feed 
+UID=`gvmd --database=gvmd --db-host=db --get-users --verbose | grep admin | awk '{print $2}'`
+gvmd --database=gvmd --db-host=db --get-users --verbose | grep admin | awk '{print $2}'
+echo UID $UID
+gvmd  --database=gvmd --db-host=db --modify-setting 78eceaec-3385-11ea-b237-28d24461215b --value $UID
+
+echo Runing GVMD daemon
+gvmd --unix-socket=/usr/local/var/run/gvmd.sock --database=gvmd --db-host=db
+
+echo Running frontend
+gsad --port=443 --no-redirect --ssl-private-key=/devopenvas.pem --ssl-certificate=/devopenvas.pem --verbose
+
+tail -f /usr/local/var/log/gvm/gsad.log &
+tail -f /usr/local/var/log/gvm/gvmd.log

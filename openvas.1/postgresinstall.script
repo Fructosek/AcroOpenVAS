@@ -1,0 +1,10 @@
+#!/bin/bash
+createuser -DRS root
+createdb -O root gvmd
+psql gvmd
+create role dba with superuser noinherit;
+grant dba to root;
+create extension "uuid-ossp";
+create extension "pgcrypto";
+ALTER ROLE root LOGIN;
+
