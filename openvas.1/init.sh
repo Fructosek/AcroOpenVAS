@@ -27,9 +27,6 @@ echo UID: $UID
 gvmd --modify-setting 78eceaec-3385-11ea-b237-28d24461215b --value $UID
 
 
-
-
-exit
 greenbone-nvt-sync 
 sleep 3
 greenbone-feed-sync --type GVMD_DATA

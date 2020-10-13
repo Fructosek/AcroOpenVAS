@@ -17,8 +17,8 @@ services:
         - "./openvas.1/greenbone-nvt-sync:/usr/local/bin/greenbone-nvt-sync"
         - "./openvas.1/devopenvas.pem:/devopenvas.pem"
         - "./openvas.1/gvmd.sql:/gvmd.sql"
-        - "./openvas.1/data:/usr/local/var/lib"
-#        - "./openvas.1/data:/var/lib/postgresql"
-        - pgdata:/var/lib/postgresql/11/
+        - "./nvt:/usr/local/var/lib"
+        - "./db:/var/lib/postgresql"
+#        - pgdata:/var/lib/postgresql/11/
 volumes:
   pgdata:
