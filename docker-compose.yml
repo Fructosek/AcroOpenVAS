@@ -15,3 +15,7 @@ services:
         - "./openvas.1/devopenvas.pem:/devopenvas.pem"
         - "./openvas.1/gvmd.sql:/gvmd.sql"
         - "./openvas.1/data:/usr/local/var/lib"
+#        - "./openvas.1/data/postgresql:/var/lib/postgresql"
+        - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:
