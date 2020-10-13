@@ -8,6 +8,9 @@ services:
       hostname: openvas
       ports:
         - "5443:443"
+      environment:
+        TZ: "Europe/Moscow"
+        OPENVAS_ADMIN_PASSWORD: "hello"
       volumes:
         - "./openvas.1/start.sh:/start.sh"
         - "./openvas.1/init.sh:/init.sh"
@@ -15,7 +18,7 @@ services:
         - "./openvas.1/devopenvas.pem:/devopenvas.pem"
         - "./openvas.1/gvmd.sql:/gvmd.sql"
         - "./openvas.1/data:/usr/local/var/lib"
-#        - "./openvas.1/data/postgresql:/var/lib/postgresql"
-        - pgdata:/var/lib/postgresql/data
+#        - "./openvas.1/data:/var/lib/postgresql"
+        - pgdata:/var/lib/postgresql/11/
 volumes:
   pgdata:

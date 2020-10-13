@@ -19,7 +19,7 @@ sudo -u postgres psql -d gvmd -f gvmd.sql
 #chmod 777 /usr/local/var/run/gvmd.sock
 
 echo Create Admin user
-gvmd --create-user=admin --password=hello --role="Super Admin"
+gvmd --create-user=admin --password=$OPENVAS_ADMIN_PASSWORD --role="Super Admin"
 
 echo Set up feed 
 UID=`gvmd --get-users --verbose | grep admin | awk '{print $2}'`
@@ -29,9 +29,7 @@ gvmd --modify-setting 78eceaec-3385-11ea-b237-28d24461215b --value $UID
 
 
 
-#rm /var/run/ospd.pid
-#ospd-openvas -u /var/run/ospd/ospd.sock -l /dev/null
-
+exit
 greenbone-nvt-sync 
 sleep 3
 greenbone-feed-sync --type GVMD_DATA
