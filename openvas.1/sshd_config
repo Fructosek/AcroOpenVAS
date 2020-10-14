@@ -1,0 +1,18 @@
+Port 22
+SyslogFacility AUTH
+LogLevel DEBUG
+LoginGraceTime 2m
+PermitRootLogin prohibit-password
+StrictModes no
+MaxAuthTries 1
+MaxSessions 3
+PubkeyAuthentication no
+PasswordAuthentication yes
+PermitEmptyPasswords no
+ChallengeResponseAuthentication no
+UsePAM yes
+PrintMotd no
+PrintLastLog no
+TCPKeepAlive yes
+Subsystem       sftp    /usr/lib/openssh/sftp-server
+
