@@ -82,6 +82,11 @@ RUN make install
 
 WORKDIR /
 
+RUN apt-get install -y openssh-server
+RUN mkdir /run/sshd
+COPY ./sshd_config /etc/ssh/sshd_config
+
+
 EXPOSE 443
 
 COPY ./start.sh /start.sh
