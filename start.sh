@@ -52,13 +52,28 @@ if [ -z $SSL_CERT ]; then
   SSL_CERT="/devopenvas.pem"
 fi
 
+echo Starting GUI...
 gsad --port=443 --no-redirect --ssl-private-key=$SSL_CERT --ssl-certificate=$SSL_CERT --verbose
+
+echo Starting SSH Server...
+
+if [ $SPLUNK_EXCAHNGE_PASSWORD ]; then
+	echo "Changing splunk user password..."
+	echo "splunk:$SPLUNK_EXCAHNGE_PASSWORD" | chpasswd
+	echo Done
+fi
+chown splunk /splunk
+/usr/sbin/sshd -E /var/log/ssh.log
 
 echo "########################################################################"
 echo "#                                                                      #"
 echo "#                         Ready to work                                #"
 echo "#                                                                      #"
 echo "########################################################################"
+
+/update.sh &
+
+tail -f /var/log/ssh.log &
 tail -f /usr/local/var/log/gvm/gsad.log &
 tail -f /usr/local/var/log/gvm/ospd.log &
 tail -f /usr/local/var/log/gvm/gvmd.log

@@ -119,7 +119,7 @@ COPY ./init.sh /init.sh
 COPY ./devopenvas.pem /devopenvas.pem
 COPY ./gvmd.sql /gvmd.sql
 COPY ./greenbone-nvt-sync /usr/local/bin/greenbone-nvt-sync
-
+COPY ./update.sh /update.sh
 
 #WORKDIR /usr/local/var/lib
 #COPY ./lib ./
@@ -132,10 +132,24 @@ RUN rm -R /usr/local/var/lib/*
 RUN rm -R /var/lib/postgresql/*
 ####
 
-ENV TZ "Europe/Moscow"
-ENV SSL_CERT "/devopenvas.pem"
-ENV OPENVAS_ADMIN_PASSWORD "hello"
+ENV TZ="Europe/Moscow"
+ENV SSL_CERT="/devopenvas.pem"
+ENV OPENVAS_ADMIN_PASSWORD="hello"
+ENV SPLUNK_EXCAHNGE_PASSWORD="hello"
 
+
+RUN apt-get install -y openssh-server
+RUN mkdir /run/sshd
+COPY ./sshd_config /etc/ssh/sshd_config 
+#Dont ask fingerprint when report generated
+RUN echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
+RUN echo "StrictHostKeyChecking accept-new" >> /etc/ssh/ssh_config
+
+RUN useradd -p 'openssl passwd -1 initpassword' splunk
+
+
+RUN apt install -y sshpass
+RUN apt install -y socat
 
 CMD [ "/start.sh"]
 
