@@ -128,8 +128,13 @@ WORKDIR /
 
 #Delete all sensor dependant files to cut image
 #For Acribia only!
-RUN rm -R /usr/local/var/lib/*
-RUN rm -R /var/lib/postgresql/*
+#RUN rm -R /usr/local/var/lib/*
+#RUN rm -R /var/lib/postgresql/*
+RUN greenbone-nvt-sync
+RUN greenbone-feed-sync --type GVMD_DATA
+RUN greenbone-feed-sync --type SCAP
+RUN greenbone-feed-sync --type CERT
+
 ####
 
 ENV TZ="Europe/Moscow"
@@ -150,6 +155,8 @@ RUN useradd -p 'openssl passwd -1 initpassword' splunk
 
 RUN apt install -y sshpass
 RUN apt install -y socat
+
+
 
 CMD [ "/start.sh"]
 
