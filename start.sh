@@ -1,7 +1,5 @@
 #!/bin/sh
 
-#locale-gen en-US.UTF-8
-
 if [ -z $TZ ]; then
   TZ="Europe/Moscow"
 fi
@@ -13,8 +11,6 @@ date
 
 export LD_LIBRARY_PATH=/usr/local/lib
 
-#locale-gen en-US.UTF-8
-
 service postgresql start
 status=`service postgresql status | grep online`
 echo Postgresql service status: $status
@@ -23,7 +19,6 @@ if [ -z "$status" ]; then
    exit;
 fi
 
-#mkdir /run/redis-openvas
 
 /usr/bin/redis-server /etc/redis/redis-openvas.conf
 sleep 1
@@ -33,15 +28,22 @@ if [ -f "/var/run/ospd.pid" ]; then
 fi
 ospd-openvas -u /var/run/ospd/ospd.sock --log-file=/usr/local/var/log/gvm/ospd.log
 
+################# Init ##########################
 echo "Checking if admin user exists in GVMD database..."
 UID=`gvmd --get-users --verbose | grep admin | awk '{print $2}'`
 echo admin UID: $UID
 if [ -z "$UID" ]; then
-        echo Not found Admin. Strarting database initialisation...
+        echo First boot??? Not found Admin. Strarting database initialisation...
 	/init.sh
-       echo Initialisation has finished
+       echo Initialisation has finished.
 fi
-sleep 5
+#################################################
+
+if [ $OPENVAS_ADMIN_PASSWORD ]; then
+  echo Changing admin's GUI password from docker CLI
+  gvmd --user=admin --new-password="$OPENVAS_ADMIN_PASSWORD"
+  echo Done.
+fi
 
 gvmd --unix-socket=/usr/local/var/run/gvmd.sock
 
