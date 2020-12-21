@@ -40,7 +40,7 @@ fi
 #################################################
 
 if [ $OPENVAS_ADMIN_PASSWORD ]; then
-  echo Changing admin's GUI password from docker CLI
+  echo Changing admin GUI password from docker CLI
   gvmd --user=admin --new-password="$OPENVAS_ADMIN_PASSWORD"
   echo Done.
 fi
