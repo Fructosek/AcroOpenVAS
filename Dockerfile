@@ -140,19 +140,22 @@ RUN greenbone-feed-sync --type CERT
 
 ENV TZ="Europe/Moscow"
 ENV SSL_CERT="/devopenvas.pem"
-ENV OPENVAS_ADMIN_PASSWORD="hello"
-ENV SPLUNK_EXCAHNGE_PASSWORD="hello"
+ENV OPENVAS_ADMIN_PASSWORD="initpassword"
+ENV SPLUNK_EXCAHNGE_PASSWORD="initpassword"
 
 
 RUN apt-get install -y openssh-server
 RUN mkdir /run/sshd
+RUN mkdir /splunk
 COPY ./sshd_config /etc/ssh/sshd_config 
 #Dont ask fingerprint when report generated
 RUN echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 RUN echo "StrictHostKeyChecking accept-new" >> /etc/ssh/ssh_config
 
 RUN useradd -p 'openssl passwd -1 initpassword' splunk
-
+RUN mkdir /home/splunk
+RUN chown splunk /home/splunk
+RUN chown splunk /splunk
 
 RUN apt install -y sshpass
 RUN apt install -y socat
