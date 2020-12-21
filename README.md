@@ -1,6 +1,6 @@
 ENV TZ="Europe/Moscow" #Used each time we run container
 ENV SSL_CERT="/devopenvas.pem" #Used each time we run container
-ENV OPENVAS_ADMIN_PASSWORD="hello"  #Used only onecem during init phaze. Default user admin
+ENV OPENVAS_ADMIN_PASSWORD="hello"  #Used only onece during init phaze. Default user admin. 
 ENV SPLUNK_EXCAHNGE_PASSWORD="hello" #Used each time we run container
 
 Directory for splunk reports /mnt/splunk
@@ -12,8 +12,25 @@ Build example:
 docker build . -t test:1.1
 
 Run example:
-docker run -v /mnt:/mnt -v /mnt/fromdocker/postgresql:/var/lib/postgresql -v /mnt/fromdocker/lib:/usr/local/var/lib -v /home/acr/AcroOpenVas/start.sh:/start.sh -v /mnt/splunk:/splunk --env SPLUNK_EXCAHNGE_PASSWORD="hello" -p 8443:443 test:1.1
+#1 Regual run
+docker run -v /mnt/fromdocker/postgresql:/var/lib/postgresql -v /mnt/fromdocker/lib:/usr/local/var/lib -v /mnt/splunk:/splunk --env SPLUNK_EXCAHNGE_PASSWORD="hello" -p 9443:443 test:1.1
+or
+docker run -v /mnt/postgresql:/var/lib/postgresql -v /mnt/lib:/usr/local/var/lib -v /mnt/splunk:/splunk --env SPLUNK_EXCAHNGE_PASSWORD="5bfdEZbqxbVJYOYsiaESZDcY4XUnoIbD" --env OPENVAS_ADMIN_PASSWORD="5c489WMPL53O7ypbQePB7DEmPqlOJt4V" -p 9443:443 test:1.1
 
-#One more example
-#everything inside docker container. We lost database and NVT each time we reboot
-docker run -v /mnt:/mnt -v /mnt/splunk:/splunk --env ENV OPENVAS_ADMIN_PASSWORD="i71a3Ou8HZMntFg4EMpYqjpMVE44HWIx" --env SPLUNK_EXCAHNGE_PASSWORD="AUDMDOcYm9gRWlTcIAbQd73OTOI4D9BM" -p 8443:443 test:1.1
+
+#2 First time to save data from /var/lib/postgresql and /usr/local/var/lib
+docker run -v /mnt:/mnt -p 8443:443 test:1.1
+wait until docer will be ready
+Then go inside docker and copy DB and NVTs
+docker exec -it X bash
+
+mkdir /mnt/postgresql
+mkdir /mnt/lib
+cp -R /var/lib/postgresql/ /mnt/postgresql/
+cp -R /usr/local/var/lib/ /mnt/lib/
+chown 102 -R /mnt/postgresql
+
+
+#3 everything inside docker container. We lost database and NVT each time we reboot
+docker run -v /mnt/splunk:/splunk --env OPENVAS_ADMIN_PASSWORD="i71a3Ou8HZMntFg4EMpYqjpMVE44HWIx" --env SPLUNK_EXCAHNGE_PASSWORD="AUDMDOcYm9gRWlTcIAbQd73OTOI4D9BM" -p 8443:443 test:1.1
+
