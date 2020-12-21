@@ -8,8 +8,32 @@ Directory for splunk reports /mnt/splunk
 
 
 
-Build example:
-docker build . -t test:1.1
+Build:
+#################################
+# 1
+docker build . -t acroopenvas:1.0
+################################
+# 2
+# Run first time
+docker run -v /mnt:/mnt --env TZ="Europe/Moscow" --env SPLUNK_EXCAHNGE_PASSWORD="5bfdEZbqxbVJYOYsiaESZDcY4XUnoIbD"  --env OPENVAS_ADMIN_PASSWORD="5c489WMPL53O7ypbQePB7DEmPqlOJt4V" -t acroopenvas:1.0
+# Wait until updates and 
+docker exec -it ID bash
+# copy data to persitent volumes
+mkdir /mnt/postgresql
+mkdir /mnt/lib
+cp -R /var/lib/postgresql/ /mnt/
+cp -R /usr/local/var/lib/ /mnt/
+chown 102 -R /mnt/postgresql
+
+#3 Run stable
+#Regualr run
+docker run -v /mnt/postgresql:/var/lib/postgresql -v /mnt/lib:/usr/local/var/lib -v /mnt/splunk:/splunk --env SSL_CERT="/devopenvas.pem" --env TZ="Europe/Moscow" -p 5000:443 acroopenvas:1.0 &
+
+####################################
+
+
+OLD HELP
+
 
 Run example:
 #1 Regual run

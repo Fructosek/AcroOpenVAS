@@ -16,6 +16,7 @@ RUN apt-get install -y \
 	libxml2-dev \
 	libradcli-dev \
 	libpcap-dev \
+	nmap \
 	libgcrypt20-dev
 
 RUN apt-get install -y git
@@ -128,12 +129,12 @@ WORKDIR /
 
 #Delete all sensor dependant files to cut image
 #For Acribia only!
-RUN rm -R /usr/local/var/lib/*
-RUN rm -R /var/lib/postgresql/*
-#RUN greenbone-nvt-sync
-#RUN greenbone-feed-sync --type GVMD_DATA
-#RUN greenbone-feed-sync --type SCAP
-#RUN greenbone-feed-sync --type CERT
+#RUN rm -R /usr/local/var/lib/*
+#RUN rm -R /var/lib/postgresql/*
+RUN greenbone-nvt-sync
+RUN greenbone-feed-sync --type GVMD_DATA
+RUN greenbone-feed-sync --type SCAP
+RUN greenbone-feed-sync --type CERT
 
 ####
 
