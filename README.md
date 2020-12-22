@@ -1,3 +1,5 @@
+https://hub.docker.com/repository/docker/kyyacribia/acroopnevas/general
+
 ENV TZ="Europe/Moscow" #Used each time we run container
 ENV SSL_CERT="/devopenvas.pem" #Used each time we run container
 ENV OPENVAS_ADMIN_PASSWORD="hello"  #Used only onece during init phaze. Default user admin. 
