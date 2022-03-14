@@ -22,14 +22,14 @@ RUN apt-get install -y \
 RUN apt-get install -y git
 
 WORKDIR /opt
-RUN git clone -b  gvm-libs-20.08 https://github.com/greenbone/gvm-libs.git ./gvm-libs
+RUN git clone -b  gvm-libs-21.04 https://github.com/greenbone/gvm-libs.git ./gvm-libs
 WORKDIR /opt/gvm-libs
 RUN cmake . && make install
 WORKDIR /opt
 RUN rm -R /opt/gvm-libs
 
 RUN apt install -y graphviz doxygen bison libksba-dev
-RUN git clone -b openvas-20.08 https://github.com/greenbone/openvas.git ./openvas
+RUN git clone -b openvas-21.04 https://github.com/greenbone/openvas.git ./openvas
 WORKDIR /opt/openvas
 RUN cmake . && make install
 
