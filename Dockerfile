@@ -22,14 +22,14 @@ RUN apt-get install -y \
 RUN apt-get install -y git
 
 WORKDIR /opt
-RUN git clone -b stable https://github.com/greenbone/gvm-libs.git ./gvm-libs
+RUN git clone -b oldstable https://github.com/greenbone/gvm-libs.git ./gvm-libs
 WORKDIR /opt/gvm-libs
 RUN cmake . && make install
 WORKDIR /opt
 RUN rm -R /opt/gvm-libs
 
 RUN apt install -y graphviz doxygen bison libksba-dev
-RUN git clone -b stable https://github.com/greenbone/openvas.git ./openvas
+RUN git clone -b oldstable https://github.com/greenbone/openvas.git ./openvas
 WORKDIR /opt/openvas
 RUN cmake . && make install
 
@@ -50,7 +50,7 @@ RUN apt-get install -y libxml++
 
 WORKDIR /opt
 
-RUN git clone -b stable https://github.com/greenbone/gvmd.git ./gvmd
+RUN git clone -b oldstable https://github.com/greenbone/gvmd.git ./gvmd
 WORKDIR /opt/gvmd
 RUN cmake . && make install
 
@@ -59,14 +59,14 @@ RUN apt-get -y install python3-defusedxml python3-lxml python3-paramiko python3-
 WORKDIR /opt
 RUN rm -R /opt/gvmd
 
-RUN git clone -b stable  https://github.com/greenbone/ospd.git  ./ospd
+RUN git clone -b oldstable  https://github.com/greenbone/ospd.git  ./ospd
 WORKDIR /opt/ospd
 RUN python3 setup.py install
 
 WORKDIR /opt
 RUN rm -R /opt/ospd
 
-RUN git clone -b stable https://github.com/greenbone/ospd-openvas.git ./ospd-openvas
+RUN git clone -b oldstable https://github.com/greenbone/ospd-openvas.git ./ospd-openvas
 WORKDIR /opt/ospd-openvas
 RUN python3 setup.py install
 
@@ -82,7 +82,7 @@ RUN apt-get -y install curl && \
 
 RUN apt-get -y install libmicrohttpd-dev
 
-RUN git clone -b stable https://github.com/greenbone/gsa.git ./gsa
+RUN git clone -b oldstable https://github.com/greenbone/gsa.git ./gsa
 
 WORKDIR /opt/gsa
 
